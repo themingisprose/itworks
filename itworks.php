@@ -2,7 +2,7 @@
 /**
  * Plugin Name: It works
  * Description: ¯\_(ツ)_/¯
- * Plugin URI: https://themingisprose.com
+ * Plugin URI: https://github.com/themingisprose/itworks
  * Author: Theming is Prse
  * Author URI: https://themingisprose.com
  * Version: 1.0.0
@@ -58,3 +58,38 @@ add_filter( 'plain_template', 'itworks_load_template' );
 add_filter( 'text_plain_template', 'itworks_load_template' );
 add_filter( 'attachment_template', 'itworks_load_template' );
 add_filter( 'comments_popup', 'itworks_load_template' );
+
+/**
+ * Remove all style sheets
+ *
+ * @since It Works 1.0.0
+ */
+function itworks_queue(){
+	if ( is_user_logged_in() )
+		return;
+
+	global $wp_scripts, $wp_styles;
+
+	foreach ( $wp_styles->queue as $style ) :
+		if ( 'itworks-reset' == $wp_styles->registered[$style]->handle )
+			continue;
+
+		wp_dequeue_style( $wp_styles->registered[$style]->handle );
+	endforeach;
+
+	foreach ( $wp_scripts->queue as $script ) :
+		wp_dequeue_script( $wp_scripts->registered[$script]->handle );
+	endforeach;
+}
+add_action( 'wp_enqueue_scripts', 'itworks_queue' );
+
+/**
+ * Add CSS Reset
+ *
+ * @since it Works 1.0.0
+ */
+function itworks_css_reset(){
+	wp_register_style( 'itworks-reset', plugin_dir_url( __FILE__ ) .'assets/reset.css' );
+	wp_enqueue_style( 'itworks-reset' );
+}
+add_action( 'wp_enqueue_scripts', 'itworks_css_reset' );

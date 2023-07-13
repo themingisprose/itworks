@@ -26,7 +26,7 @@
 <?php wp_body_open(); ?>
 
 	<main>
-		<strong><?php _e( 'It works', 'itworks' ) ?></strong>
+		<strong><?php _e( 'It works!', 'itworks' ) ?></strong>
 		<div>¯\_(ツ)_/¯</div>
 	</main>
 
